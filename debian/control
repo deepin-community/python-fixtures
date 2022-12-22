@@ -1,0 +1,42 @@
+Source: python-fixtures
+Section: python
+Priority: optional
+Maintainer: Debian OpenStack <team+openstack@tracker.debian.org>
+Uploaders:
+ Thomas Goirand <zigo@debian.org>,
+Build-Depends:
+ debhelper-compat (= 9),
+ dh-python,
+ openstack-pkg-tools (>= 99~),
+ python3-all,
+ python3-pbr,
+ python3-setuptools,
+ python3-sphinx,
+Build-Depends-Indep:
+ python3-mock,
+ python3-six,
+ python3-testtools,
+Standards-Version: 4.4.1
+Vcs-Browser: https://salsa.debian.org/openstack-team/python/python-fixtures
+Vcs-Git: https://salsa.debian.org/openstack-team/python/python-fixtures.git
+Homepage: https://github.com/testing-cabal/fixtures
+
+Package: python3-fixtures
+Architecture: all
+Depends:
+ python3-pbr,
+ python3-six,
+ python3-testtools,
+ ${misc:Depends},
+ ${python3:Depends},
+Description: PyUnit extension for defining test fixtures outside of test cases - Python 3.x
+ A PyUnit extension for defining test fixtures outside of test cases. Each
+ fixture encapsulates creating, reusing and freeing some state - be that a
+ temporary directory on disk, SQL server connection, or just a particular
+ object graph. This is extremely useful for testing and general resource
+ management.
+ .
+ Fixtures ships with the base class, unittest glue and a number of precanned
+ concrete fixtures.
+ .
+ This package provides the Python 3.x module.
