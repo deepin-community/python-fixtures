@@ -1,3 +1,36 @@
+python-fixtures (4.1.0-2) unstable; urgency=medium
+
+  * Uploading to unstable.
+
+ -- Thomas Goirand <zigo@debian.org>  Wed, 03 Apr 2024 16:13:40 +0200
+
+python-fixtures (4.1.0-1) experimental; urgency=medium
+
+  * New upstream release.
+
+ -- Thomas Goirand <zigo@debian.org>  Fri, 23 Feb 2024 11:05:12 +0100
+
+python-fixtures (4.0.1-3) unstable; urgency=medium
+
+  * Cleans better (Closes: #1047498).
+
+ -- Thomas Goirand <zigo@debian.org>  Mon, 21 Aug 2023 12:42:25 +0200
+
+python-fixtures (4.0.1-2) unstable; urgency=medium
+
+  * Uploading to unstable.
+
+ -- Thomas Goirand <zigo@debian.org>  Fri, 23 Sep 2022 12:32:48 +0200
+
+python-fixtures (4.0.1-1) experimental; urgency=medium
+
+  * New upstream release.
+  * Fixed (build-)depends for this release.
+  * Add autopkgtest.
+  * Remove test patch.
+
+ -- Thomas Goirand <zigo@debian.org>  Tue, 30 Aug 2022 14:59:12 +0200
+
 python-fixtures (3.0.0-4) unstable; urgency=medium
 
   [ Ondřej Nový ]
