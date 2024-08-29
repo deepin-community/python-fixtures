@@ -2,9 +2,47 @@
 fixtures release notes
 ----------------------
 
-
 NEXT
 ~~~~
+
+4.1.0
+~~~~~
+
+* Drop support for Python 3.6 (EOL)
+  (Stephen Finucane)
+
+* Add a new ``WarningsFilter`` filter, allowing users to filter warnings as
+  part of their tests, before restoring said filters.
+  (Stephen Finucane)
+
+4.0.1
+~~~~~
+
+* Remove ``testtools`` from ``requirements.txt`` as well.
+  (Colin Watson)
+
+4.0.0
+~~~~~
+
+* Add missing APIs to ``FakeProcess``, making it match ``Popen``.
+  (Free Ekanayaka, #1373224)
+
+* Dropped support for Python 2.7, Python 3.4 and Python 3.5 (EOL).
+  (Hugo van Kemenade)
+
+* Added support for Python 3.6-3.10.
+  (Free Ekanayaka, Stephen Finucane, Colin Watson)
+
+* Add possibility to reset the ``FakeLogger``. (Balazs Gibizer)
+
+* Access ``mock.DEFAULT`` lazily rather than at import time so ``mock`` can
+  be overridden with something else. (Jelmer Vernooĳ)
+
+* Support all ``subprocess.Popen`` arguments up to Python 3.10.
+  (Jürgen Gmach, Colin Watson)
+
+* Move ``testtools`` requirement to a new ``fixtures[streams]`` extra.
+  (Colin Watson)
 
 3.0.0
 ~~~~~
@@ -349,7 +387,7 @@ CHANGES:
 0.3
 ~~~
 
-This release slightly breaks compatability in order to get the cleanUp API
+This release slightly breaks compatibility in order to get the cleanUp API
 really solid : it now will report correctly with testtools 0.9.7, and 
 generally does the right thing by default. Apologies to anyone affected by
 this churn, but I felt the cleanness of the API was worth it.
