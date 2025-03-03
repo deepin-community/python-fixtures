@@ -5,16 +5,15 @@ Maintainer: Debian OpenStack <team+openstack@tracker.debian.org>
 Uploaders:
  Thomas Goirand <zigo@debian.org>,
 Build-Depends:
- debhelper-compat (= 9),
+ debhelper-compat (= 11),
  dh-python,
- openstack-pkg-tools (>= 99~),
+ openstack-pkg-tools,
  python3-all,
- python3-pbr,
+ python3-pbr (>= 5.7.0),
  python3-setuptools,
  python3-sphinx,
 Build-Depends-Indep:
  python3-mock,
- python3-six,
  python3-testtools,
 Standards-Version: 4.4.1
 Vcs-Browser: https://salsa.debian.org/openstack-team/python/python-fixtures
@@ -24,8 +23,7 @@ Homepage: https://github.com/testing-cabal/fixtures
 Package: python3-fixtures
 Architecture: all
 Depends:
- python3-pbr,
- python3-six,
+ python3-pbr (>= 5.7.0),
  python3-testtools,
  ${misc:Depends},
  ${python3:Depends},

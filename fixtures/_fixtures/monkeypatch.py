@@ -1,12 +1,12 @@
 #  fixtures: Fixtures with cleanups for testing and convenience.
 #
 # Copyright (c) 2010, Robert Collins <robertc@robertcollins.net>
-# 
+#
 # Licensed under either the Apache License, Version 2.0 or the BSD 3-clause
 # license at the users choice. A copy of both licenses are available in the
 # project source as Apache-2.0 and BSD. You may not use this file except in
 # compliance with one of these two licences.
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under these licenses is distributed on an "AS IS" BASIS, WITHOUT
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -15,29 +15,25 @@
 
 __all__ = [
     'MonkeyPatch'
-    ]
+]
 
 import functools
-import sys
 import types
 
 from fixtures import Fixture
 
 
 _class_types = (type, )
-if getattr(types, 'ClassType', None):
-    # Python 2 has multiple types of classes.
-    _class_types = _class_types + (types.ClassType,)
 
 
 def _coerce_values(obj, name, new_value, sentinel):
     """Return an adapted (new_value, old_value) for patching obj.name.
-    
+
     setattr transforms a function into an instancemethod when set on a class.
     This checks if the attribute to be replaced is a callable descriptor -
     staticmethod, classmethod, or types.FunctionType - and wraps new_value if
     necessary.
-    
+
     This also checks getattr(obj, name) and wraps it if necessary
     since the staticmethod wrapper isn't preserved.
 
@@ -84,9 +80,11 @@ def _coerce_values(obj, name, new_value, sentinel):
             # bound state rather than having it bound to the new object
             # it has been patched onto.
             captured_method = new_value
+
             @functools.wraps(old_value)
             def avoid_get(*args, **kwargs):
                 return captured_method(*args, **kwargs)
+
             new_value = avoid_get
 
     return (new_value, old_value)
@@ -130,7 +128,7 @@ class MonkeyPatch(Fixture):
         Fixture.__init__(self)
         self.name = name
         self.new_value = new_value
-    
+
     def _setUp(self):
         location, attribute = self.name.rsplit('.', 1)
         # Import, swallowing all errors as any element of location may be
@@ -139,18 +137,21 @@ class MonkeyPatch(Fixture):
             __import__(location, {}, {})
         except ImportError:
             pass
+
         components = location.split('.')
         current = __import__(components[0], {}, {})
         for component in components[1:]:
             current = getattr(current, component)
         sentinel = object()
-        new_value, old_value = _coerce_values(current, attribute,
-                self.new_value, sentinel)
+        new_value, old_value = _coerce_values(
+            current, attribute, self.new_value, sentinel)
+
         if self.new_value is self.delete:
             if old_value is not sentinel:
                 delattr(current, attribute)
         else:
             setattr(current, attribute, new_value)
+
         if old_value is sentinel:
             self.addCleanup(self._safe_delete, current, attribute)
         else:
