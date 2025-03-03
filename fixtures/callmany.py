@@ -19,17 +19,12 @@ __all__ = [
 
 import sys
 
-from testtools.compat import (
-    reraise,
-    )
-from testtools.helpers import try_import
 
-
-class MultipleExceptions(Exception):
-    """Report multiple exc_info tuples in self.args."""
-
-MultipleExceptions = try_import(
-    "testtools.MultipleExceptions", MultipleExceptions)
+try:
+    from testtools import MultipleExceptions
+except ImportError:
+    class MultipleExceptions(Exception):
+        """Report multiple exc_info tuples in self.args."""
 
 
 class CallMany(object):
@@ -70,10 +65,10 @@ class CallMany(object):
 
             Thus, to catch a specific exception from a function run by __call__,
             you need to catch both the exception and MultipleExceptions, and
-            then check within a MultipleExceptions instance for an occurance of
+            then check within a MultipleExceptions instance for an occurrence of
             the type you wish to catch.
         :return: Either None or a list of the exc_info() for each exception
-            that occured if raise_errors was False.
+            that occurred if raise_errors was False.
         """
         cleanups = reversed(self._cleanups)
         self._cleanups = []
@@ -86,7 +81,7 @@ class CallMany(object):
         if result and raise_errors:
             if 1 == len(result):
                 error = result[0]
-                reraise(error[0], error[1], error[2])
+                raise error[1].with_traceback(error[2])
             else:
                 raise MultipleExceptions(*result)
         if not raise_errors:

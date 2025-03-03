@@ -20,10 +20,8 @@ __all__ = [
     ]
 
 import io
-import sys
 
 from fixtures import Fixture
-import testtools
 
 
 class Stream(Fixture):
@@ -43,10 +41,14 @@ class Stream(Fixture):
         self._stream_factory = stream_factory
 
     def _setUp(self):
+        # Available with the fixtures[streams] extra.
+        from testtools.content import content_from_stream
+
         write_stream, read_stream = self._stream_factory()
         self.stream = write_stream
-        self.addDetail(self._detail_name,
-            testtools.content.content_from_stream(read_stream, seek_offset=0))
+        self.addDetail(
+            self._detail_name,
+            content_from_stream(read_stream, seek_offset=0))
 
 
 def _byte_stream_factory():
@@ -69,15 +71,6 @@ def _string_stream_factory():
     upper = io.TextIOWrapper(lower, encoding="utf8")
     # See http://bugs.python.org/issue7955
     upper._CHUNK_SIZE = 1
-    # In theory, this is sufficient and correct, but on Python2,
-    # upper.write(_b('foo")) will whinge louadly.
-    if sys.version_info[0] < 3:
-        upper_write = upper.write
-        def safe_write(str_or_bytes):
-            if type(str_or_bytes) is str:
-                str_or_bytes = str_or_bytes.decode('utf8')
-            return upper_write(str_or_bytes)
-        upper.write = safe_write
     return upper, lower
 
 

@@ -25,19 +25,18 @@ __all__ = [
 import itertools
 import sys
 
-import six
-from testtools.compat import (
-    advance_iterator,
-    )
-from testtools.helpers import try_import
-
 from fixtures.callmany import (
     CallMany,
     # Deprecated, imported for compatibility.
     MultipleExceptions,
     )
 
-gather_details = try_import("testtools.testcase.gather_details")
+
+try:
+    from testtools.testcase import gather_details
+except ImportError:
+    gather_details = None
+
 
 # This would be better in testtools (or a common library)
 def combine_details(source_details, target_details):
@@ -46,7 +45,7 @@ def combine_details(source_details, target_details):
         new_name = name
         disambiguator = itertools.count(1)
         while new_name in target_details:
-            new_name = '%s-%d' % (name, advance_iterator(disambiguator))
+            new_name = '%s-%d' % (name, next(disambiguator))
         name = new_name
         target_details[name] = content_object
 
@@ -118,7 +117,7 @@ class Fixture(object):
             Thus, to catch a specific exception from cleanUp, you need to catch
             both the exception and MultipleExceptions, and then check within
             a MultipleExceptions instance for the type you're catching.
-        :return: A list of the exc_info() for each exception that occured if
+        :return: A list of the exc_info() for each exception that occurred if
             raise_first was False
         """
         try:
@@ -211,7 +210,7 @@ class Fixture(object):
             if issubclass(err[0], Exception):
                 raise MultipleExceptions(*errors)
             else:
-                six.reraise(*err)
+                raise err[1].with_traceback(err[2])
 
     def _setUp(self):
         """Template method for subclasses to override.
